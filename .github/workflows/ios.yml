@@ -1,4 +1,4 @@
-name: ios-test
+name: ios
 env:
   CI: true
 

@@ -11,7 +11,7 @@ on: [push]
 #    branches: [ develop, master ]
 
 jobs:
-  validate:
+  lint:
     if: github.event.pull_request.draft == false
     runs-on: [ self-hosted, macOS, ARM64 ]
     steps:
