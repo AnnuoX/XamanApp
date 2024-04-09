@@ -47,9 +47,6 @@ jobs:
           show: "all"
         if: always()
 
-      - name: Set current date as env variable
-        run:
-
       - name: Build APK
         working-directory: android
         run: ./gradlew app:assembleRelease --quiet
