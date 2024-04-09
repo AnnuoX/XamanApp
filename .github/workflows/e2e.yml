@@ -28,8 +28,9 @@ jobs:
           cocoapods: 'true'
 
       - name: Rebuild detox
-        if: steps.cache.outputs.cache-hit == 'true'
-        run: npx detox clean-framework-cache && npx detox build-framework-cache
+        run: |
+          npx detox clean-framework-cache
+          npx detox build-framework-cache
 
       - name: Build app for detox
         run: npx detox build e2e --configuration ${DETOX_CONFIGURATION} --if-missing
