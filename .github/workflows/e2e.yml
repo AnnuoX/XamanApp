@@ -1,21 +1,24 @@
 name: e2e-test
+env:
+  CI: true
+  DETOX_CONFIGURATION: ios.simulator+xaman.ios
 
-on:
-  push:
-    branches: [ develop, master ]
-  pull_request:
-    branches: [ develop, master ]
+on: [push]
+
+#on:
+#  push:
+#    branches: [ develop, master ]
+#  pull_request:
+#    branches: [ develop, master ]
 
 jobs:
   build-run:
     if: github.event.pull_request.draft == false
     runs-on: [ self-hosted, macOS, ARM64 ]
-    env:
-      DETOX_CONFIGURATION: ios.simulator+xaman.ios
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 1
 
