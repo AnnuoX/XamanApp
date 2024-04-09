@@ -31,7 +31,7 @@ jobs:
       - name: Run tests
         working-directory: ios
         run: |
-          xcodebuild -workspace Xaman.xcworkspace -scheme Xaman -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 15,OS=${{ matrix.ios }}' -resultBundlePath TestResults test
+          xcodebuild -quiet -workspace Xaman.xcworkspace -scheme Xaman -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 15,OS=${{ matrix.ios }}' -resultBundlePath TestResults test
 
       - name: Test Summary
         uses: kishikawakatsumi/xcresulttool@v1

@@ -11,13 +11,9 @@ on: [push]
 #    branches: [ develop, master ]
 
 jobs:
-  test:
+  prepare:
     if: github.event.pull_request.draft == false
     runs-on: [ self-hosted, macOS, ARM64 ]
-    strategy:
-      matrix:
-        api-level: [ 34 ]
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -27,6 +23,15 @@ jobs:
       - name: Prepare Environment
         uses: ./.github/actions/prepare-env
 
+  test:
+    if: github.event.pull_request.draft == false
+    needs: [prepare]
+    runs-on: [ self-hosted, macOS, ARM64 ]
+    strategy:
+      matrix:
+        api-level: [ 34 ]
+
+    steps:
       - name: Build tests
         working-directory: android
         run: ./gradlew app:assembleAndroidTest
@@ -52,22 +57,15 @@ jobs:
   build:
     if: github.event.pull_request.draft == false
     runs-on: [ self-hosted, macOS, ARM64 ]
+    needs: [ prepare, test ]
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
-
       - name: Set current date as env variable
         run: echo "DATE_TODAY=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
 
-      - name: Prepare Environment
-        uses: ./.github/actions/prepare-env
-
       - name: Build
         working-directory: android
-        run: ./gradlew app:assembleRelease
+        run: ./gradlew app:assembleRelease --quiet
 
       - name: Upload APK dev release
         uses: actions/upload-artifact@v3
